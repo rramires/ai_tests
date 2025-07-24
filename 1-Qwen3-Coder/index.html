@@ -120,111 +120,128 @@
                         }
                     }
                     
-                    .tasks-container {
+                    .tasks-container-wrapper {
+                        position: relative;
                         min-height: 120px;
                         background-color: #f8f9fa;
+                        border-radius: 0 0 10px 10px;
                         padding: 10px;
-                        transition: background-color 0.3s;
                         
-                        &.drag-over {
-                            background-color: #e3e9f7;
-                            border: 2px dashed #4b6cb7;
-                        }
-                        
-                        .task {
-                            display: flex;
-                            align-items: center;
-                            padding: 15px 20px;
-                            border-bottom: 1px solid #eee;
-                            transition: background-color 0.2s, transform 0.2s;
-                            cursor: grab;
-                            background: white;
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            border: 2px dashed transparent;
                             border-radius: 8px;
-                            margin-bottom: 8px;
-                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-                            
-                            &:hover {
-                                background-color: #eef2f7;
-                                transform: translateY(-2px);
-                            }
-                            
-                            &:active {
-                                cursor: grabbing;
-                            }
-                            
-                            &:last-child {
-                                border-bottom: none;
-                                margin-bottom: 0;
-                            }
-                            
-                            &.dragging {
-                                opacity: 0.5;
-                                transform: scale(0.98);
-                            }
-                            
-                            .task-checkbox {
-                                margin-right: 15px;
-                                width: 20px;
-                                height: 20px;
-                                cursor: pointer;
-                            }
-                            
-                            .task-text {
-                                flex: 1;
-                                font-size: 16px;
-                                word-break: break-word;
-                                padding-right: 10px;
-                                
-                                &.completed {
-                                    text-decoration: line-through;
-                                    color: #888;
-                                }
-                            }
-                            
-                            .task-actions {
-                                display: flex;
-                                gap: 10px;
-                                
-                                button {
-                                    background: none;
-                                    border: none;
-                                    cursor: pointer;
-                                    width: 32px;
-                                    height: 32px;
-                                    border-radius: 50%;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    transition: background-color 0.3s;
-                                    
-                                    &:hover {
-                                        background-color: #ddd;
-                                    }
-                                    
-                                    &.edit-btn {
-                                        color: #4b6cb7;
-                                    }
-                                    
-                                    &.delete-btn {
-                                        color: #e74c3c;
-                                    }
-                                }
-                            }
+                            pointer-events: none;
+                            transition: border-color 0.3s;
                         }
                         
-                        .empty-state {
-                            text-align: center;
-                            padding: 30px 20px;
-                            color: #888;
+                        &.drag-over::before {
+                            border-color: #4b6cb7;
+                        }
+                        
+                        .tasks-container {
+                            min-height: 100px;
                             
-                            .empty-icon {
-                                font-size: 40px;
-                                margin-bottom: 10px;
-                                opacity: 0.3;
+                            .task {
+                                display: flex;
+                                align-items: center;
+                                padding: 15px 20px;
+                                border-bottom: 1px solid #eee;
+                                transition: background-color 0.2s, transform 0.2s;
+                                cursor: grab;
+                                background: white;
+                                border-radius: 8px;
+                                margin-bottom: 8px;
+                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                                
+                                &:hover {
+                                    background-color: #eef2f7;
+                                    transform: translateY(-2px);
+                                }
+                                
+                                &:active {
+                                    cursor: grabbing;
+                                }
+                                
+                                &:last-child {
+                                    border-bottom: none;
+                                    margin-bottom: 0;
+                                }
+                                
+                                &.dragging {
+                                    opacity: 0.5;
+                                    transform: scale(0.98);
+                                }
+                                
+                                .task-checkbox {
+                                    margin-right: 15px;
+                                    width: 20px;
+                                    height: 20px;
+                                    cursor: pointer;
+                                }
+                                
+                                .task-text {
+                                    flex: 1;
+                                    font-size: 16px;
+                                    word-break: break-word;
+                                    padding-right: 10px;
+                                    
+                                    &.completed {
+                                        text-decoration: line-through;
+                                        color: #888;
+                                    }
+                                }
+                                
+                                .task-actions {
+                                    display: flex;
+                                    gap: 10px;
+                                    
+                                    button {
+                                        background: none;
+                                        border: none;
+                                        cursor: pointer;
+                                        width: 32px;
+                                        height: 32px;
+                                        border-radius: 50%;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        transition: background-color 0.3s;
+                                        
+                                        &:hover {
+                                            background-color: #ddd;
+                                        }
+                                        
+                                        &.edit-btn {
+                                            color: #4b6cb7;
+                                        }
+                                        
+                                        &.delete-btn {
+                                            color: #e74c3c;
+                                        }
+                                    }
+                                }
                             }
                             
-                            p {
-                                font-size: 14px;
+                            .empty-state {
+                                text-align: center;
+                                padding: 30px 20px;
+                                color: #888;
+                                
+                                .empty-icon {
+                                    font-size: 40px;
+                                    margin-bottom: 10px;
+                                    opacity: 0.3;
+                                }
+                                
+                                p {
+                                    font-size: 14px;
+                                }
                             }
                         }
                     }
@@ -294,8 +311,10 @@
                     <span>Tarefas Pendentes</span>
                     <span class="task-count" id="pending-count-header">0</span>
                 </div>
-                <div class="tasks-container" id="pending-tasks" data-status="pending">
-                    <!-- Tarefas pendentes serão inseridas aqui -->
+                <div class="tasks-container-wrapper" id="pending-wrapper" data-status="pending">
+                    <div class="tasks-container" id="pending-tasks">
+                        <!-- Tarefas pendentes serão inseridas aqui -->
+                    </div>
                 </div>
             </div>
             
@@ -304,8 +323,10 @@
                     <span>Tarefas Concluídas</span>
                     <span class="task-count" id="completed-count-header">0</span>
                 </div>
-                <div class="tasks-container" id="completed-tasks" data-status="completed">
-                    <!-- Tarefas concluídas serão inseridas aqui -->
+                <div class="tasks-container-wrapper" id="completed-wrapper" data-status="completed">
+                    <div class="tasks-container" id="completed-tasks">
+                        <!-- Tarefas concluídas serão inseridas aqui -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -322,6 +343,8 @@
         const addTaskBtn = document.getElementById('add-task-btn');
         const pendingTasksContainer = document.getElementById('pending-tasks');
         const completedTasksContainer = document.getElementById('completed-tasks');
+        const pendingWrapper = document.getElementById('pending-wrapper');
+        const completedWrapper = document.getElementById('completed-wrapper');
         const totalCount = document.getElementById('total-count');
         const pendingCount = document.getElementById('pending-count');
         const completedCount = document.getElementById('completed-count');
@@ -427,7 +450,7 @@
         // Função para configurar drag and drop
         function setupDragAndDrop() {
             const taskElements = document.querySelectorAll('.task');
-            const containers = document.querySelectorAll('.tasks-container');
+            const wrappers = document.querySelectorAll('.tasks-container-wrapper');
             
             taskElements.forEach(task => {
                 task.addEventListener('dragstart', (e) => {
@@ -442,23 +465,23 @@
                 });
             });
             
-            containers.forEach(container => {
-                container.addEventListener('dragover', (e) => {
+            wrappers.forEach(wrapper => {
+                wrapper.addEventListener('dragover', (e) => {
                     e.preventDefault();
-                    container.classList.add('drag-over');
+                    wrapper.classList.add('drag-over');
                 });
                 
-                container.addEventListener('dragleave', () => {
-                    container.classList.remove('drag-over');
+                wrapper.addEventListener('dragleave', () => {
+                    wrapper.classList.remove('drag-over');
                 });
                 
-                container.addEventListener('drop', (e) => {
+                wrapper.addEventListener('drop', (e) => {
                     e.preventDefault();
-                    container.classList.remove('drag-over');
+                    wrapper.classList.remove('drag-over');
                     
                     if (draggedTask) {
                         const taskId = e.dataTransfer.getData('text/plain');
-                        const targetStatus = container.dataset.status;
+                        const targetStatus = wrapper.dataset.status;
                         
                         moveTask(taskId, targetStatus);
                     }

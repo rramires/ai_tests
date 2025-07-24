@@ -31,3 +31,15 @@ Gostaria de poder mover, arrastando e soltando as tarefas entre as listas de pen
 
 Resultado: Bom, manteve o mesmo contexto de layout e código anterior, fazendo apenas as modificações necessárias para a implementação nova.  
 Tem um pequeno erro na borda do drag and drop, faz as listas tremerem um pouco. Mas funciona normal.
+
+#### 1 - Corrigindo erros - borda no drag and drop causa desalinhamento:
+
+```sh
+Quando arrasta uma tarefa sobre a outra lista, surge a borda pontilhada para mostrar o foco.
+Está funcionando, porém da uma tremida no layout todo, pois empurra os outros elementos.
+Corrija mantendo a borda.
+```
+
+Resultado: Conseguiu corrigir perfeitamente! Tudo continua OK.
+
+Veredito final: Modelo mto bom!

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TODO List SPA - Listas Separadas</title>
+    <title>TODO List SPA - Drag & Drop</title>
     <style>
         * {
             margin: 0;
@@ -121,24 +121,45 @@
                     }
                     
                     .tasks-container {
-                        max-height: 300px;
-                        overflow-y: auto;
-                        min-height: 100px;
+                        min-height: 120px;
                         background-color: #f8f9fa;
+                        padding: 10px;
+                        transition: background-color 0.3s;
+                        
+                        &.drag-over {
+                            background-color: #e3e9f7;
+                            border: 2px dashed #4b6cb7;
+                        }
                         
                         .task {
                             display: flex;
                             align-items: center;
                             padding: 15px 20px;
                             border-bottom: 1px solid #eee;
-                            transition: background-color 0.2s;
+                            transition: background-color 0.2s, transform 0.2s;
+                            cursor: grab;
+                            background: white;
+                            border-radius: 8px;
+                            margin-bottom: 8px;
+                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
                             
                             &:hover {
                                 background-color: #eef2f7;
+                                transform: translateY(-2px);
+                            }
+                            
+                            &:active {
+                                cursor: grabbing;
                             }
                             
                             &:last-child {
                                 border-bottom: none;
+                                margin-bottom: 0;
+                            }
+                            
+                            &.dragging {
+                                opacity: 0.5;
+                                transform: scale(0.98);
                             }
                             
                             .task-checkbox {
@@ -253,7 +274,7 @@
     <div class="container">
         <header>
             <h1>Minhas Tarefas</h1>
-            <p>Organize seu dia de forma simples e eficiente</p>
+            <p>Organize seu dia - Arraste e solte para mover tarefas</p>
         </header>
         
         <div class="input-section">
@@ -273,7 +294,7 @@
                     <span>Tarefas Pendentes</span>
                     <span class="task-count" id="pending-count-header">0</span>
                 </div>
-                <div class="tasks-container" id="pending-tasks">
+                <div class="tasks-container" id="pending-tasks" data-status="pending">
                     <!-- Tarefas pendentes serão inseridas aqui -->
                 </div>
             </div>
@@ -283,7 +304,7 @@
                     <span>Tarefas Concluídas</span>
                     <span class="task-count" id="completed-count-header">0</span>
                 </div>
-                <div class="tasks-container" id="completed-tasks">
+                <div class="tasks-container" id="completed-tasks" data-status="completed">
                     <!-- Tarefas concluídas serão inseridas aqui -->
                 </div>
             </div>
@@ -294,6 +315,7 @@
         // Estado da aplicação
         let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
         let editingTaskId = null;
+        let draggedTask = null;
 
         // Elementos do DOM
         const taskInput = document.getElementById('task-input');
@@ -362,6 +384,18 @@
             renderTasks();
         }
 
+        // Função para mover tarefa entre listas
+        function moveTask(id, newStatus) {
+            tasks = tasks.map(task => {
+                if (task.id === id) {
+                    return { ...task, completed: newStatus === 'completed' };
+                }
+                return task;
+            });
+            saveTasks();
+            renderTasks();
+        }
+
         // Função para iniciar edição de tarefa
         function startEditing(id) {
             editingTaskId = id;
@@ -390,6 +424,48 @@
             renderTasks();
         }
 
+        // Função para configurar drag and drop
+        function setupDragAndDrop() {
+            const taskElements = document.querySelectorAll('.task');
+            const containers = document.querySelectorAll('.tasks-container');
+            
+            taskElements.forEach(task => {
+                task.addEventListener('dragstart', (e) => {
+                    draggedTask = task;
+                    task.classList.add('dragging');
+                    e.dataTransfer.setData('text/plain', task.dataset.id);
+                });
+                
+                task.addEventListener('dragend', () => {
+                    task.classList.remove('dragging');
+                    draggedTask = null;
+                });
+            });
+            
+            containers.forEach(container => {
+                container.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    container.classList.add('drag-over');
+                });
+                
+                container.addEventListener('dragleave', () => {
+                    container.classList.remove('drag-over');
+                });
+                
+                container.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    container.classList.remove('drag-over');
+                    
+                    if (draggedTask) {
+                        const taskId = e.dataTransfer.getData('text/plain');
+                        const targetStatus = container.dataset.status;
+                        
+                        moveTask(taskId, targetStatus);
+                    }
+                });
+            });
+        }
+
         // Função para renderizar as tarefas em listas separadas
         function renderTasks() {
             const pendingTasks = tasks.filter(task => !task.completed);
@@ -400,14 +476,14 @@
                 pendingTasksContainer.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">📋</div>
-                        <p>Nenhuma tarefa pendente</p>
+                        <p>Arraste tarefas concluídas aqui para movê-las</p>
                     </div>
                 `;
             } else {
                 pendingTasksContainer.innerHTML = pendingTasks.map(task => {
                     if (editingTaskId === task.id) {
                         return `
-                            <div class="task">
+                            <div class="task" data-id="${task.id}">
                                 <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} disabled>
                                 <input type="text" class="edit-input" value="${task.text}" id="edit-input-${task.id}">
                                 <div class="task-actions">
@@ -419,7 +495,7 @@
                     }
                     
                     return `
-                        <div class="task">
+                        <div class="task" draggable="true" data-id="${task.id}">
                             <input type="checkbox" class="task-checkbox" onchange="toggleTaskCompletion('${task.id}')">
                             <div class="task-text">${task.text}</div>
                             <div class="task-actions">
@@ -436,14 +512,14 @@
                 completedTasksContainer.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">✅</div>
-                        <p>Nenhuma tarefa concluída</p>
+                        <p>Arraste tarefas pendentes aqui para marcá-las como concluídas</p>
                     </div>
                 `;
             } else {
                 completedTasksContainer.innerHTML = completedTasks.map(task => {
                     if (editingTaskId === task.id) {
                         return `
-                            <div class="task">
+                            <div class="task" data-id="${task.id}">
                                 <input type="checkbox" class="task-checkbox" checked disabled>
                                 <input type="text" class="edit-input" value="${task.text}" id="edit-input-${task.id}">
                                 <div class="task-actions">
@@ -455,7 +531,7 @@
                     }
                     
                     return `
-                        <div class="task">
+                        <div class="task" draggable="true" data-id="${task.id}">
                             <input type="checkbox" class="task-checkbox" checked onchange="toggleTaskCompletion('${task.id}')">
                             <div class="task-text completed">${task.text}</div>
                             <div class="task-actions">
@@ -466,6 +542,9 @@
                     `;
                 }).join('');
             }
+            
+            // Configurar drag and drop após renderizar
+            setupDragAndDrop();
         }
 
         // Event listeners

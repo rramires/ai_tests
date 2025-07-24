@@ -22,3 +22,12 @@ Resumindo: separar em duas listas uma de tarefas à fazer e outra de concluídas
 ```
 
 Resultado: Muito bom, pois manteve o mesmo contexto de layout e código inicial, fazendo apenas as modificações necessárias para a implementação nova.
+
+#### C - Segunda modificação - arrastar e soltar entre as duas listas:
+
+```sh
+Gostaria de poder mover, arrastando e soltando as tarefas entre as listas de pendentes e concluídas.
+```
+
+Resultado: Bom, manteve o mesmo contexto de layout e código anterior, fazendo apenas as modificações necessárias para a implementação nova.  
+Tem um pequeno erro na borda do drag and drop, faz as listas tremerem um pouco. Mas funciona normal.

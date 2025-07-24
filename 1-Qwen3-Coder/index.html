@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TODO List SPA</title>
+    <title>TODO List SPA - Listas Separadas</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,7 @@
 
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
             background-color: white;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -92,89 +92,121 @@
                 border-bottom: 1px solid #eee;
             }
             
-            .tasks-container {
-                max-height: 400px;
-                overflow-y: auto;
+            .lists-container {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
                 
-                .task {
-                    display: flex;
-                    align-items: center;
-                    padding: 15px 20px;
-                    border-bottom: 1px solid #eee;
-                    transition: background-color 0.2s;
+                .list-section {
+                    border-radius: 10px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
                     
-                    &:hover {
-                        background-color: #f8f9fa;
-                    }
-                    
-                    &:last-child {
-                        border-bottom: none;
-                    }
-                    
-                    .task-checkbox {
-                        margin-right: 15px;
-                        width: 20px;
-                        height: 20px;
-                        cursor: pointer;
-                    }
-                    
-                    .task-text {
-                        flex: 1;
-                        font-size: 16px;
-                        word-break: break-word;
-                        padding-right: 10px;
+                    .list-header {
+                        background: #4b6cb7;
+                        color: white;
+                        padding: 12px 15px;
+                        font-weight: bold;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
                         
-                        &.completed {
-                            text-decoration: line-through;
-                            color: #888;
+                        .task-count {
+                            background: rgba(255, 255, 255, 0.2);
+                            border-radius: 20px;
+                            padding: 2px 10px;
+                            font-size: 14px;
                         }
                     }
                     
-                    .task-actions {
-                        display: flex;
-                        gap: 10px;
+                    .tasks-container {
+                        max-height: 300px;
+                        overflow-y: auto;
+                        min-height: 100px;
+                        background-color: #f8f9fa;
                         
-                        button {
-                            background: none;
-                            border: none;
-                            cursor: pointer;
-                            width: 32px;
-                            height: 32px;
-                            border-radius: 50%;
+                        .task {
                             display: flex;
                             align-items: center;
-                            justify-content: center;
-                            transition: background-color 0.3s;
+                            padding: 15px 20px;
+                            border-bottom: 1px solid #eee;
+                            transition: background-color 0.2s;
                             
                             &:hover {
-                                background-color: #eee;
+                                background-color: #eef2f7;
                             }
                             
-                            &.edit-btn {
-                                color: #4b6cb7;
+                            &:last-child {
+                                border-bottom: none;
                             }
                             
-                            &.delete-btn {
-                                color: #e74c3c;
+                            .task-checkbox {
+                                margin-right: 15px;
+                                width: 20px;
+                                height: 20px;
+                                cursor: pointer;
+                            }
+                            
+                            .task-text {
+                                flex: 1;
+                                font-size: 16px;
+                                word-break: break-word;
+                                padding-right: 10px;
+                                
+                                &.completed {
+                                    text-decoration: line-through;
+                                    color: #888;
+                                }
+                            }
+                            
+                            .task-actions {
+                                display: flex;
+                                gap: 10px;
+                                
+                                button {
+                                    background: none;
+                                    border: none;
+                                    cursor: pointer;
+                                    width: 32px;
+                                    height: 32px;
+                                    border-radius: 50%;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    transition: background-color 0.3s;
+                                    
+                                    &:hover {
+                                        background-color: #ddd;
+                                    }
+                                    
+                                    &.edit-btn {
+                                        color: #4b6cb7;
+                                    }
+                                    
+                                    &.delete-btn {
+                                        color: #e74c3c;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        .empty-state {
+                            text-align: center;
+                            padding: 30px 20px;
+                            color: #888;
+                            
+                            .empty-icon {
+                                font-size: 40px;
+                                margin-bottom: 10px;
+                                opacity: 0.3;
+                            }
+                            
+                            p {
+                                font-size: 14px;
                             }
                         }
                     }
-                }
-            }
-            
-            .empty-state {
-                text-align: center;
-                padding: 40px 20px;
-                color: #888;
-                
-                .empty-icon {
-                    font-size: 60px;
-                    margin-bottom: 15px;
-                    opacity: 0.3;
-                }
-                
-                p {
-                    font-size: 16px;
                 }
             }
             
@@ -188,7 +220,7 @@
             }
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
             .container {
                 border-radius: 10px;
                 
@@ -202,6 +234,16 @@
                 
                 .input-section {
                     padding: 15px;
+                    flex-direction: column;
+                    
+                    input {
+                        width: 100%;
+                    }
+                }
+                
+                .lists-container {
+                    padding: 15px;
+                    gap: 15px;
                 }
             }
         }
@@ -221,11 +263,30 @@
         
         <div class="stats">
             <span>Total: <span id="total-count">0</span></span>
+            <span>Pendentes: <span id="pending-count">0</span></span>
             <span>Concluídas: <span id="completed-count">0</span></span>
         </div>
         
-        <div class="tasks-container" id="tasks-container">
-            <!-- As tarefas serão inseridas aqui dinamicamente -->
+        <div class="lists-container">
+            <div class="list-section">
+                <div class="list-header">
+                    <span>Tarefas Pendentes</span>
+                    <span class="task-count" id="pending-count-header">0</span>
+                </div>
+                <div class="tasks-container" id="pending-tasks">
+                    <!-- Tarefas pendentes serão inseridas aqui -->
+                </div>
+            </div>
+            
+            <div class="list-section">
+                <div class="list-header">
+                    <span>Tarefas Concluídas</span>
+                    <span class="task-count" id="completed-count-header">0</span>
+                </div>
+                <div class="tasks-container" id="completed-tasks">
+                    <!-- Tarefas concluídas serão inseridas aqui -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -237,9 +298,13 @@
         // Elementos do DOM
         const taskInput = document.getElementById('task-input');
         const addTaskBtn = document.getElementById('add-task-btn');
-        const tasksContainer = document.getElementById('tasks-container');
+        const pendingTasksContainer = document.getElementById('pending-tasks');
+        const completedTasksContainer = document.getElementById('completed-tasks');
         const totalCount = document.getElementById('total-count');
+        const pendingCount = document.getElementById('pending-count');
         const completedCount = document.getElementById('completed-count');
+        const pendingCountHeader = document.getElementById('pending-count-header');
+        const completedCountHeader = document.getElementById('completed-count-header');
 
         // Função para salvar tarefas no localStorage
         function saveTasks() {
@@ -250,8 +315,13 @@
         // Função para atualizar estatísticas
         function updateStats() {
             totalCount.textContent = tasks.length;
+            const pendingTasks = tasks.filter(task => !task.completed).length;
             const completedTasks = tasks.filter(task => task.completed).length;
+            
+            pendingCount.textContent = pendingTasks;
             completedCount.textContent = completedTasks;
+            pendingCountHeader.textContent = pendingTasks;
+            completedCountHeader.textContent = completedTasks;
         }
 
         // Função para gerar ID único
@@ -320,44 +390,82 @@
             renderTasks();
         }
 
-        // Função para renderizar as tarefas
+        // Função para renderizar as tarefas em listas separadas
         function renderTasks() {
-            if (tasks.length === 0) {
-                tasksContainer.innerHTML = `
+            const pendingTasks = tasks.filter(task => !task.completed);
+            const completedTasks = tasks.filter(task => task.completed);
+            
+            // Renderizar tarefas pendentes
+            if (pendingTasks.length === 0) {
+                pendingTasksContainer.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">📋</div>
-                        <p>Nenhuma tarefa encontrada</p>
-                        <p>Adicione uma nova tarefa para começar</p>
+                        <p>Nenhuma tarefa pendente</p>
                     </div>
                 `;
-                return;
-            }
-
-            tasksContainer.innerHTML = tasks.map(task => {
-                if (editingTaskId === task.id) {
+            } else {
+                pendingTasksContainer.innerHTML = pendingTasks.map(task => {
+                    if (editingTaskId === task.id) {
+                        return `
+                            <div class="task">
+                                <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} disabled>
+                                <input type="text" class="edit-input" value="${task.text}" id="edit-input-${task.id}">
+                                <div class="task-actions">
+                                    <button class="save-btn" title="Salvar" onclick="saveEdit('${task.id}', document.getElementById('edit-input-${task.id}').value)">✓</button>
+                                    <button class="cancel-btn" title="Cancelar" onclick="cancelEdit()">✕</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
                     return `
                         <div class="task">
-                            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} disabled>
-                            <input type="text" class="edit-input" value="${task.text}" id="edit-input-${task.id}">
+                            <input type="checkbox" class="task-checkbox" onchange="toggleTaskCompletion('${task.id}')">
+                            <div class="task-text">${task.text}</div>
                             <div class="task-actions">
-                                <button class="save-btn" title="Salvar" onclick="saveEdit('${task.id}', document.getElementById('edit-input-${task.id}').value)">✓</button>
-                                <button class="cancel-btn" title="Cancelar" onclick="cancelEdit()">✕</button>
+                                <button class="edit-btn" title="Editar" onclick="startEditing('${task.id}')">✏️</button>
+                                <button class="delete-btn" title="Excluir" onclick="deleteTask('${task.id}')">🗑️</button>
                             </div>
                         </div>
                     `;
-                }
-                
-                return `
-                    <div class="task">
-                        <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTaskCompletion('${task.id}')">
-                        <div class="task-text ${task.completed ? 'completed' : ''}">${task.text}</div>
-                        <div class="task-actions">
-                            <button class="edit-btn" title="Editar" onclick="startEditing('${task.id}')">✏️</button>
-                            <button class="delete-btn" title="Excluir" onclick="deleteTask('${task.id}')">🗑️</button>
-                        </div>
+                }).join('');
+            }
+            
+            // Renderizar tarefas concluídas
+            if (completedTasks.length === 0) {
+                completedTasksContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">✅</div>
+                        <p>Nenhuma tarefa concluída</p>
                     </div>
                 `;
-            }).join('');
+            } else {
+                completedTasksContainer.innerHTML = completedTasks.map(task => {
+                    if (editingTaskId === task.id) {
+                        return `
+                            <div class="task">
+                                <input type="checkbox" class="task-checkbox" checked disabled>
+                                <input type="text" class="edit-input" value="${task.text}" id="edit-input-${task.id}">
+                                <div class="task-actions">
+                                    <button class="save-btn" title="Salvar" onclick="saveEdit('${task.id}', document.getElementById('edit-input-${task.id}').value)">✓</button>
+                                    <button class="cancel-btn" title="Cancelar" onclick="cancelEdit()">✕</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    return `
+                        <div class="task">
+                            <input type="checkbox" class="task-checkbox" checked onchange="toggleTaskCompletion('${task.id}')">
+                            <div class="task-text completed">${task.text}</div>
+                            <div class="task-actions">
+                                <button class="edit-btn" title="Editar" onclick="startEditing('${task.id}')">✏️</button>
+                                <button class="delete-btn" title="Excluir" onclick="deleteTask('${task.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
         }
 
         // Event listeners
